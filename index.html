@@ -171,7 +171,9 @@ generarEntradaBtn.addEventListener("click", async () => {
     return;
   }
   try {
-   const ref = collection(db, "almacenes", "Almacen_Dulces", "entradas");
+    generarEntradaBtn.disabled = true;
+    generarEntradaBtn.textContent = "Guardando...";
+    const ref = collection(db, "almacenes", "Almacen_Dulces", "entradas");
     const qLast = query(ref, orderBy("folio_num", "desc"), limit(1));
     const snapshot = await getDocs(qLast);
     let lastFolioNum = 0;
@@ -189,8 +191,12 @@ generarEntradaBtn.addEventListener("click", async () => {
     renderTabla();
     infoProducto.innerHTML = "<p>Esperando código...</p>";
     codigoInput.focus();
+    generarEntradaBtn.disabled = false;
+generarEntradaBtn.textContent = "Generar Entrada al Almacén";
   } catch (e) {
     mostrarAlerta("❌ Error al generar entrada: " + e.message, "error");
+    generarEntradaBtn.disabled = false;
+  generarEntradaBtn.textContent = "Generar Entrada al Almacén";
   }
 });
 </script>
